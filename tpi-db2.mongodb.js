@@ -1,7 +1,33 @@
 // use gestionAcademica;
 
 // ============================================================================
-// CREACIÓN DE COLECCIONES CON VALIDACIÓN E ÍNDICES
+// CREACIÓN DE USUARIOS Y ROLES
+// ============================================================================
+
+db.createUser({
+    user: "Gerolupo12",
+    pwd: passwordPrompt(),
+    roles: [
+        {
+            role: "root",
+            db: "gestionAcademica"
+        },
+    ]
+});
+
+db.createUser({
+    user: "docente",
+    pwd: passwordPrompt(),
+    roles: [
+        {
+            role: "readWrite",
+            db: "gestionAcademica"
+        },
+    ]
+});
+
+// ============================================================================
+// CREACIÓN DE COLECCIONES CON VALIDACIONES E ÍNDICES
 // ============================================================================
 
 // COLECCIÓN ESTUDIANTES
@@ -242,7 +268,7 @@ db.materias.insertMany([
 const materiaBD = db.materias.findOne({ codigo: "MAT-101" });
 const materiaNoSQL = db.materias.findOne({ codigo: "MAT-102" });
 
-// [Opcional - Buenas prácticas] Actualizamos el campo embebido "materiasDicta" en profesores
+// Actualizamos el campo embebido "materiasDicta" en profesores
 db.profesores.updateOne(
     { _id: profTuring._id },
     { $set: { materiasDicta: [{ materiaId: materiaBD._id.toString(), nombre: materiaBD.nombre }] } }
@@ -450,14 +476,14 @@ db.profesores.aggregate([
 // Ver promedio de notas parciales de cada alumno en una materia
 db.inscripciones.aggregate([
     {
-        // 1. Filtramos las inscripciones activas de la materia
+        // Filtramos las inscripciones activas de la materia
         $match: {
             "materiaInfo.codigo": "MAT-101",
             activo: true
         }
     },
     {
-        // 2. Proyectamos y filtramos el array de calificaciones al vuelo
+        // Proyectamos y filtramos el array de calificaciones al vuelo
         $project: {
             _id: 0,
             materia: "$materiaInfo.nombre",
@@ -481,18 +507,18 @@ db.inscripciones.aggregate([
         }
     },
     {
-        // 3. Calculamos el promedio basándonos únicamente en el array filtrado
+        // Calculamos el promedio basándonos únicamente en el array filtrado
         $project: {
             materia: 1,
             estudiante: 1,
             estado: 1,
             promedioParciales: {
-                $ifNull: [{ $avg: "$soloParciales.nota" }, 0] // Si no tiene parciales rindiendo, devuelve 0
+                $ifNull: [{ $avg: "$soloParciales.nota" }, 0] // Si no tiene parciales, devuelve 0
             }
         }
     },
     {
-        // 4. Ordenamos los resultados por promedio descendente
+        // Ordenamos los resultados por promedio descendente
         $sort: { promedioParciales: -1 }
     }
 ]);
