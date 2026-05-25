@@ -1,32 +1,6 @@
 // use gestionAcademica;
 
 // ============================================================================
-// CREACIÓN DE USUARIOS Y ROLES
-// ============================================================================
-
-db.createUser({
-    user: "Gerolupo12",
-    pwd: passwordPrompt(),
-    roles: [
-        {
-            role: "root",
-            db: "gestionAcademica"
-        },
-    ]
-});
-
-db.createUser({
-    user: "docente",
-    pwd: passwordPrompt(),
-    roles: [
-        {
-            role: "readWrite",
-            db: "gestionAcademica"
-        },
-    ]
-});
-
-// ============================================================================
 // CREACIÓN DE COLECCIONES CON VALIDACIONES E ÍNDICES
 // ============================================================================
 
