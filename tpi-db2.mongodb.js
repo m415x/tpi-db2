@@ -1,4 +1,4 @@
-// use gestionAcademica;
+use gestionAcademica;
 
 // ============================================================================
 // CREACIÓN DE COLECCIONES CON VALIDACIONES E ÍNDICES
@@ -84,7 +84,7 @@ db.createCollection("profesores", {
                     items: {
                         bsonType: "object",
                         properties: {
-                            materiaId: { bsonType: "string" },
+                            materiaId: { bsonType: "objectId" },
                             nombre: { bsonType: "string" }
                         }
                     }
@@ -245,11 +245,11 @@ const materiaNoSQL = db.materias.findOne({ codigo: "MAT-102" });
 // Actualizamos el campo embebido "materiasDicta" en profesores
 db.profesores.updateOne(
     { _id: profTuring._id },
-    { $set: { materiasDicta: [{ materiaId: materiaBD._id.toString(), nombre: materiaBD.nombre }] } }
+    { $set: { materiasDicta: [{ materiaId: materiaBD._id, nombre: materiaBD.nombre }] } }
 );
 db.profesores.updateOne(
     { _id: profAda._id },
-    { $set: { materiasDicta: [{ materiaId: materiaNoSQL._id.toString(), nombre: materiaNoSQL.nombre }] } }
+    { $set: { materiasDicta: [{ materiaId: materiaNoSQL._id, nombre: materiaNoSQL.nombre }] } }
 );
 
 
