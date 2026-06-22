@@ -1,8 +1,9 @@
 {
     "name": "tpi-db2",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Trabajo Práctico Integrador - Base de Datos II",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node --env-file=.env index.js",
@@ -11,8 +12,10 @@
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "packageManager": "pnpm@10.33.0",
+    "packageManager": "pnpm@11.8.0",
     "dependencies": {
-        "mongoose": "^9.6.2"
+        "dotenv": "^17.4.2",
+        "mongodb": "^7.3.0",
+        "mongoose": "^9.7.1"
     }
 }
