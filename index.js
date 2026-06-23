@@ -16,13 +16,17 @@ const PASS = process.env.MONGO_PASS
 
 const MONGO_URI = `mongodb+srv://${USER}:${PASS}@${CLUSTER}/${DB_NAME}?retryWrites=true&w=majority`;
 
+const borradoParaPruebas = false
+
 async function inicializarBaseDeDatos() {
     // Limpieza previa para evitar duplicados de claves únicas en las pruebas
-    await models.InscripcionModel.deleteMany({});
-    await models.MateriaModel.deleteMany({});
-    await models.ProfesorModel.deleteMany({});
-    await models.EstudianteModel.deleteMany({});
-    console.log("-> Colecciones limpiadas con éxito.");
+    if (borradoParaPruebas) {
+        await models.InscripcionModel.deleteMany({});
+        await models.MateriaModel.deleteMany({});
+        await models.ProfesorModel.deleteMany({});
+        await models.EstudianteModel.deleteMany({});
+        console.log("-> Colecciones limpiadas con éxito.");
+    }
 
     // 1. INSERTAR ESTUDIANTES
     const estudiantesInsertados = await models.EstudianteModel.insertMany(inserts.estudiantes);
