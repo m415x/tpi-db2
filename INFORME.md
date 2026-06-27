@@ -1,4 +1,27 @@
-# Informe y Conclusión
+# Sistema de Gestión Académica - TPI DB2
+
+Este proyecto implementa un backend en Node.js que gestiona inscripciones universitarias utilizando MongoDB como base de datos NoSQL y Mongoose como ODM.
+
+---
+
+## Principales Restricciones y Reglas de Negocio
+
+Para asegurar la integridad de los datos, el sistema implementa las siguientes validaciones:
+
+- **Baja Lógica:** Ningún registro se elimina físicamente. Se utiliza el campo `activo: Boolean`. Toda consulta de lectura está filtrada por `{ activo: true }`.
+- **Integridad de Estados (Enum):** Las inscripciones solo pueden tener los estados: `["Regular", "Cursando", "Libre", "Aprobado"]`. Cualquier intento de insertar un valor distinto será rechazado por el esquema de Mongoose.
+- **Unicidad:** Se ha definido un **Índice Compuesto Único** en la colección de inscripciones basado en `estudianteId` + `materiaId`. Esto impide físicamente que un estudiante pueda inscribirse dos veces a la misma materia.
+
+---
+
+## Cómo probar el CRUD
+
+El script principal `index.js` realiza el siguiente flujo automáticamente:
+
+1. **CREATE**: Limpia la DB e inserta datos semilla de prueba.
+2. **READ**: Consulta los estudiantes marcados como activos.
+3. **UPDATE**: Modifica datos de contacto.
+4. **DELETE**: Aplica la baja lógica a un estudiante específico.
 
 ---
 
